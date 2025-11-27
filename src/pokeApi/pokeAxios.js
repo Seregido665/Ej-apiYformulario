@@ -1,8 +1,16 @@
 import axios from "axios";
 
-export const getPokemons = () => {
-  return axios
-    .get(`https://pokeapi.co/api/v2/pokemon?limit=493`)
-    .then((response) => response.data.results); 
+// --- PARA main.jsx ---
+export const getAllPokemons = () => {
+  return axios.get(`https://pokeapi.co/api/v2/pokemon?limit=809`)
 };
 
+// --- PARA detail.jsx ---
+export const getPokemonById = (id) => {
+  return axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+};
+
+// --- PARA search.jsx ---
+export const getPokemonByName = (name) => {
+  return axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
+};

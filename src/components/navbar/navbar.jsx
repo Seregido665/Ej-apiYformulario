@@ -2,11 +2,18 @@ import { useNavigate } from "react-router-dom"
 import BotonSubmenu from '../buttons/butsSubMenu'
 import "./navbar.css"
 
-const Navbar = ({ type, botones }) => {
+const Navbar = ({ text }) => {
+    
+    // --- PARA NAVEGAR POR LOS MENUS --> App.jsx
     const navigate = useNavigate();
+
+
     return (
-        <div  className={type}>
-            <nav className={botones}>
+        <div>
+            <div>
+                <h2 className="titulo pb-2">{text}</h2>
+            </div>
+            <nav className="navbar">
                 <BotonSubmenu
                     type="subMenu"
                     action={() => navigate("/main")}
@@ -17,13 +24,13 @@ const Navbar = ({ type, botones }) => {
                     type="subMenu"
                     action={() => navigate("/profile")}
                 >
-                    Crear Perfil
+                    Crear Perfil.
                 </BotonSubmenu>
                 <BotonSubmenu
                     type="subMenu"
                     action={() => navigate("/contact")}
                 >
-                    Contacto.
+                    Contactos.
                 </BotonSubmenu>
                 <BotonSubmenu
                     type="subMenu"
@@ -35,5 +42,4 @@ const Navbar = ({ type, botones }) => {
         </div>
     )
 }
-
 export default Navbar;

@@ -5,38 +5,41 @@ const Dropdown = ({ title, options = [ ], onSelect }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedLabel, setSelectedLabel] = useState(title)
 
+    // -- PARA ALTERNAR VALOR DE isOpen  --
     const toggleDropdown = () => setIsOpen(!isOpen)
 
-    const handleOptionClick = (option) => {
-        setSelectedLabel(option.value || option.label);
-        setIsOpen(false);
-        onSelect(option.value);
+
+    // --- CONSULTAR  allFilters.jsx --> SELECCIONA ENTRE LAS options EL value CORRESPONDIENTE
+    const handleOptionClick = (filter) => {
+        setSelectedLabel(filter.value);
+        onSelect(filter.value);
+        setIsOpen(!isOpen);    
     }
+
 
     return (
         <div className="dropdown">
             <button 
                 className="dropdown-toggle" 
                 onClick={toggleDropdown}
-                onBlur={() => setIsOpen(false)}  
-                    // PARA QUE SE DESSELECCIONE SI "pierde foco" 
-                >
-                    {title}
+                onBlur={() => setIsOpen(false)}                      // PARA QUE SE DESSELECCIONE SI "pierde foco" 
+            >
+                {title}
             </button>
 
             {isOpen && (
                 <ul>
-                    {options.map((option, i) => (
+                    {options.map((filter, id) => (
                         <li 
-                            kei={i}
-                            onMouseDown={(e) => e.preventDefault()}
-                                // PARA QUE EL onBlur NO BLOQUEEE el estilo SELECTED
-                            onClick={() => handleOptionClick(option)}
+                            kei={id}
+                            onMouseDown={(e) => e.preventDefault()}  // PARA QUE EL onBlur NO BLOQUEEE el estilo SELECTED
+                            onClick={() => handleOptionClick(filter)}
                             className={selectedLabel === 
-                                (option.value || option.label) ? 'selected' : ''}
+                                (filter.value) ? 'selected' : ''}
                             >
                             <span>
-                                {option.label}
+                                {filter.label}  {/* label ES EL TEXTO DE CADA FILTRO*/} 
+                                                {/* value ES EL IDENTIFICADOR*/}
                             </span>
                         </li>
                     ))}

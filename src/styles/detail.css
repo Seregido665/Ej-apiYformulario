@@ -1,5 +1,5 @@
 .card {
-  background-color: #e9e9e9;
+  background-color: #ffffff;
   transition: transform 0.2s;        /* Espacio interno */
   border-radius: 10px;          /* Bordes redondeados */
   max-width:400px;             /* No se estira demasiado */
@@ -31,4 +31,3 @@
   margin: 5px 0;  
   display:block      
 }
-

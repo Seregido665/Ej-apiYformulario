@@ -7,15 +7,16 @@ import About from "./components/views/aboutMe"
 import './App.css'
 
 function App() {
-
   return (
     <>
       <div>
         <Routes>
           <Route path="/main" element={<MainMenu />} />
           <Route path="/detail/:id" element={<Details />} />
+                            {/* id PASA A SER UN "parametro dinamico": Parte de la URL que va cambiando.*/}
           <Route path="/profile" element={<Profile />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/profile/edit/:id" element={<Profile />} />
           <Route path="/aboutMe" element={<About />} />
           <Route path="*" element={<MainMenu />} /> 
         </Routes>
@@ -23,5 +24,4 @@ function App() {
     </>
   )
 }
-
-export default App
+export default App;

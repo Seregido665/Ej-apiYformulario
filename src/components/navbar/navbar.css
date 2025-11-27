@@ -1,29 +1,32 @@
+.navbar {
+    display: flex;
+    justify-content: center;     
+    gap: 20px;              
+    padding: 8px 20px;
+    background-color: rgba(255, 255, 255, 0.548);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.158);
+    border-radius: 12px;
+    flex-wrap: wrap;       
+    margin-bottom: 5px;  
+}
+
 .subMenu {
-  background-color: rgb(255, 255, 255);
-  color: rgb(0, 0, 0);
-  margin: 5px 15px 5px 15px;
-  border: none;
-  border-radius: 8px;
-  transition: all 0.3s ease;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .subMenu:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 12px rgba(0,0,0,0.2);
-  background: linear-gradient( #ffffff, #c0c0c0); /* invertir degradado al pasar el mouse */
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
-
-.navbar {          
-  background-color: rgba(255, 255, 255, 0.548);
-  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.15);
-}
-
-.botones {
-  justify-content: center;     /* ← Cambia aquí: flex-start | center | flex-end | space-between */
-  align-items: center;
-  padding: 15px 0 15px 0;                /* Se adapta en móvil */
-}
-
 
 
 

@@ -1,6 +1,7 @@
 import "../../styles/contact.css"
 
-const Usuario = ({ mail, name, number, img, action }) => {
+const Usuario = ({ mail, name, number, img, actionDel, actionEdit }) => {
+    
     return (
         <div className="user-card">
             <div>
@@ -10,10 +11,7 @@ const Usuario = ({ mail, name, number, img, action }) => {
                         className="user-card-img"
                     />
                 ) : (
-                    <img // --> FOTO POR DEFECTO.
-                        src={img ? img : "../../public/defaultPhoto.png"} 
-                        className="user-card-img"
-                    />
+                    <div className="profile-preview">Foto</div> 
                 )}
                 <h3> {name}</h3>
                 <p><strong>Email:</strong> {mail}</p>
@@ -21,8 +19,15 @@ const Usuario = ({ mail, name, number, img, action }) => {
             </div>
             <div>
             <button 
+                className="buttonEdit"
+                onClick={actionEdit}        // --> contact.jsx          
+                title="Editar usuario"
+            >
+                Editar
+            </button>
+            <button 
                     className="buttonDel"
-                    onClick={action}  // Para la función de eliminar
+                    onClick={actionDel}     // --> contact.jsx
                     title="Eliminar usuario"
                 >
                     X
