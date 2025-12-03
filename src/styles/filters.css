@@ -2,7 +2,6 @@
 .dropdown {
   position: relative;        /* ← Necesario para que el ul absolute se posicione respecto a este div */
   display: inline-block;
-  z-index: 1000;
 }
 .dropdown-toggle {
   padding: 5px 30px;
@@ -31,6 +30,7 @@ ul {
   margin-top: 3px;
   padding: 8px 0;
   list-style: none;
+  z-index: 1000;
 }
 
 

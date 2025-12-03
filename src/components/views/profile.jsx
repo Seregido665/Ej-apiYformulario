@@ -74,10 +74,11 @@ const Profile = () => {
 
        if (id) {
             // --- EDITAR ---
-            const edited = usuariosGuardados.findIndex(user => user.id === id); 
+            const userId= Number(id);
+            const edited = usuariosGuardados.findIndex(user => user.id === userId); 
                     // COGE EL USUARIO DEL /id DE LA URL
             usuariosGuardados[edited] = {
-                id: id,
+                id: userId,
                 imagen: formData.photo,
                 nombre: formData.name,
                 correo: formData.email,

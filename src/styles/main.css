@@ -1,6 +1,6 @@
 .menuTop {
   min-height: 100vh; 
-  padding-top: 10px;
+  padding: 10px 0 80px;
   width: 100%;
   top: 0;
   z-index: 1000;
