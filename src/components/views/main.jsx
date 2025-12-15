@@ -117,8 +117,8 @@ const MainMenu = () => {
     }, [allPokemons, filters]);
 
 
-  if (loading) return <div>Cargando Pokémon...</div>;  // PARA HACER LA APP MAS VISUAL.
-                                                       // Y ASEGURA QUE TODO VA BIEN.
+  if (loading) return <div>Cargando la página...</div>;  // PARA HACER LA APP MAS VISUAL.
+                                                         // Y ASEGURA QUE TODO VA BIEN.
 
 
     return (
