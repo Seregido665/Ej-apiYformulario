@@ -28,5 +28,18 @@
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
+.subMenu:disabled {
+    background-color: rgb(220, 220, 220);
+    color: rgb(160, 160, 160);
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 0.6;
+}
+
+.subMenu:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
 
 

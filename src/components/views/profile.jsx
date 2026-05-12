@@ -16,7 +16,7 @@ const Profile = () => {
                             
     // --- ESTADO-OBJETO CON LAS DISTINTAS PROPIEDADES O CAMPOS ---
     const [formData, setFormData] = useState(() => ({
-        photo: usuarioEdit ? usuarioEdit.imagen : "",       // SI NO HAY DATO PARA EDITAR --> ""
+        photo: usuarioEdit ? usuarioEdit.imagen : "",      
         name: usuarioEdit ? usuarioEdit.nombre : "",
         email: usuarioEdit ? usuarioEdit.correo : "",
         number: usuarioEdit ? usuarioEdit.telefono : "",
@@ -27,22 +27,20 @@ const Profile = () => {
 
     // -- FUNCIÓN PARA TODOS LOS inputs ---
     const handleChange = (e) => {
-        const { name, value } = e.target;   // RECOGE EL TEXTO DE CADA input
+        const { name, value } = e.target;  
         setFormData({
-            ...formData,        // COGE EL OBJETO TAL Y COMO ESTE
-            [name]: value       // Y LO ACTUALIZA
+            ...formData,      
+            [name]: value      
         });
     };
 
 
     // --- FUNCION PARA SUBIR LA IMAGEN ---> (FileReader)
     const handleImageChange = (event) => {
-        const file = event.target.files[0];   // COGE EL ARCHIVO SELECICONADO (SOLO HABRA 1)
-                                              // ESCRIBE [0] PORQUE files ES UN array
+        const file = event.target.files[0];  
+                                              
         if (file) {
             const reader = new FileReader();  
-                // CREAMOS EL LECTOR CON FileReader() --> De la API nativa del navegador, 
-                                                       // como localStorage, document o console
             reader.readAsDataURL(file); // CONVIERTE UN ARCHIVO binario EN base64 (leible por src="")
             reader.onload = () => {
                 setFormData({
@@ -96,6 +94,7 @@ const Profile = () => {
             usuariosGuardados.push(nuevoUsuario);       // AÑADE UN NUEVO ELEMENTO A LA LISTA. 
         }
     localStorage.setItem("usuarios", JSON.stringify(usuariosGuardados));  // Y ACTUALIZA LA LISTA.
+    window.dispatchEvent(new Event("usuariosActualizados"));
     navigate("/contact");
     };
 

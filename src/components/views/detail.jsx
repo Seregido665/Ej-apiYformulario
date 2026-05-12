@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getPokemonById } from '../../pokeApi/pokeAxios.js';
 import Navbar from '../navbar/navbar'
@@ -6,6 +6,8 @@ import "../../styles/detail.css"
 
 const Details = () => {
     const { id } = useParams(); // COGE EL "parametro dinamico" :id DESDE --> App.jsx
+    const navigate = useNavigate();
+    const currentId = Number(id);
     const [pokemon, setPokemon] = useState(null);
 
     // --- CONSULTA A LA API EN pokeAxios.js ---
@@ -31,13 +33,28 @@ const Details = () => {
                         <h3>#{pokemon.id.toString().padStart(3, '0')} - {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h3>      {/*PARA QUE LOS NUMEROS SE VEAN 007 por ejemplo*/}
             
                     </div>
-                    <div className="pokemon-image-container">
-                        <div className="pokemon-image-wrapper">
-                            <img 
-                                src={pokemon.sprites.front_default} 
-                                className="pokemon-image"
-                            />
+                    <div className="pokemon-nav">
+                        <button
+                            className="nav-btn"
+                            onClick={() => navigate(`/detail/${currentId - 1}`)}
+                            disabled={currentId <= 1}
+                        >
+                            ←
+                        </button>
+                        <div className="pokemon-image-container">
+                            <div className="pokemon-image-wrapper">
+                                <img
+                                    src={pokemon.sprites.front_default}
+                                    className="pokemon-image"
+                                />
+                            </div>
                         </div>
+                        <button
+                            className="nav-btn"
+                            onClick={() => navigate(`/detail/${currentId + 1}`)}
+                        >
+                            →
+                        </button>
                     </div>
                     <div className="pokemon-types">
                         {pokemon.types.map((type) => (
