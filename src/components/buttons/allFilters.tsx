@@ -1,22 +1,26 @@
 import Dropdown from './filter'
 import '../../styles/filters.css'
 import Buscar from '../searcher/search'
+import type { Filters } from '../../types/app'
 
-const AllDropdowns = ({ onFilterChange }) => {
+interface AllDropdownsProps {
+  onFilterChange: (label: keyof Filters, value: string) => void;
+}
 
-    // --- FUNCIONES DE FILTRADO DE LOS Dropdown ---
-    //     TODOS PASAN POR onFilterChange, Y MANDA EL RESULTADO A main.jsx
-    const handleGeneration = (value) => onFilterChange('generation', value);
-    const handleType = (value) => onFilterChange('type', value);
-    const handleWeight = (value) => onFilterChange('weight', value);
-    const handleHeight = (value) => onFilterChange('height', value);
-    
+const AllDropdowns = ({ onFilterChange }: AllDropdownsProps) => {
+
+    // -  FILTRADO DE LOS Dropdown -
+    const handleGeneration = (value: string) => onFilterChange('generation', value);
+    const handleType = (value: string) => onFilterChange('type', value);
+    const handleWeight = (value: string) => onFilterChange('weight', value);
+    const handleHeight = (value: string) => onFilterChange('height', value);
+
 
     return (
         <div>
             <div className="filtros">
                 <div>
-                    <Dropdown 
+                    <Dropdown
                         title="GENERACIÓN"
                         options = {[
                             { label: "Todas", value: "all" },
@@ -30,7 +34,7 @@ const AllDropdowns = ({ onFilterChange }) => {
                         ]}
                         onSelect={handleGeneration}
                     />
-                    <Dropdown 
+                    <Dropdown
                         title="TIPOS"
                         options={[
                             { label: "Todos",      value: "all" },
@@ -54,7 +58,7 @@ const AllDropdowns = ({ onFilterChange }) => {
                         ]}
                         onSelect={handleType}
                     />
-                    <Dropdown 
+                    <Dropdown
                         title="PESO"
                         options={[
                             { label: "Todos",      value: "all" },
@@ -69,7 +73,7 @@ const AllDropdowns = ({ onFilterChange }) => {
                         ]}
                         onSelect={handleWeight}
                     />
-                    <Dropdown 
+                    <Dropdown
                         title="ALTURA"
                         options={[
                             { label: "Todos",      value: "all" },
@@ -85,9 +89,8 @@ const AllDropdowns = ({ onFilterChange }) => {
                     />
                 </div>
                 <div>
-                    <Buscar onSearch={(nombre) => onFilterChange('search', nombre)}/>
-                                                {/* IGUAL QUE LOS OTROS FILTROS, PERO ESTE POR nombre.*/}
-                                                {/* LO MANDA A allFilters.jsx */}
+                    <Buscar type="text" 
+                            onSearch={(nombre: string) => onFilterChange('search', nombre)}/>
                 </div>
             </div>
         </div>

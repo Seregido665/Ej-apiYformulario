@@ -4,19 +4,19 @@ import Navbar from '../navbar/navbar'
 import Input from "../input/input"
 import BotonSubmenu from "../buttons/butsSubMenu"
 import "../../styles/profile.css"
+import type { Usuario, ProfileFormData } from '../../types/app'
 
 const Profile = () => {
     const navigate = useNavigate();
-    const { id } = useParams();
 
-    //--- SI HAY UN /id LE DECIMOS QUE ES DE UN USUARIO PARA EDITAR ---
-    const usuarioEdit = JSON.parse(localStorage.getItem("usuarios") || "[]")
+    const { id } = useParams<{ id?: string }>();
+    const usuarioEdit = (JSON.parse(localStorage.getItem("usuarios") || "[]") as Usuario[])
                             .find(user => user.id === Number(id));
 
-                            
-    // --- ESTADO-OBJETO CON LAS DISTINTAS PROPIEDADES O CAMPOS ---
-    const [formData, setFormData] = useState(() => ({
-        photo: usuarioEdit ? usuarioEdit.imagen : "",      
+
+    // --- PROPIEDADES ---
+    const [formData, setFormData] = useState<ProfileFormData>(() => ({
+        photo: usuarioEdit ? usuarioEdit.imagen : "",
         name: usuarioEdit ? usuarioEdit.nombre : "",
         email: usuarioEdit ? usuarioEdit.correo : "",
         number: usuarioEdit ? usuarioEdit.telefono : "",
@@ -25,35 +25,35 @@ const Profile = () => {
     }));
 
 
-    // -- FUNCIÓN PARA TODOS LOS inputs ---
-    const handleChange = (e) => {
-        const { name, value } = e.target;  
+    // -- FUNCIÓN PARA inputs ---
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const { name, value } = e.target;
         setFormData({
-            ...formData,      
-            [name]: value      
+            ...formData,
+            [name]: value
         });
     };
 
 
     // --- FUNCION PARA SUBIR LA IMAGEN ---> (FileReader)
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];  
-                                              
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const file = event.target.files?.[0];
+
         if (file) {
-            const reader = new FileReader();  
+            const reader = new FileReader();
             reader.readAsDataURL(file); // CONVIERTE UN ARCHIVO binario EN base64 (leible por src="")
             reader.onload = () => {
                 setFormData({
                     ...formData,
-                    photo: reader.result   // ACTUALIZA EL ESTADO-OBJETO Y LE AÑADE LA "photo"
+                    photo: reader.result as string   // ACTUALIZA Y AÑADE LA "photo"
                 });
             }
-        } 
+        }
     };
 
 
     // --- FUNCION PRINCIPAL DEL FORMULARIO ---> Date.now() PARA EL id
-    const handleForm = (e) => {
+    const handleForm = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
 
         // -- VALIDACIONES --
@@ -66,15 +66,12 @@ const Profile = () => {
                 return;
             }
 
-        const usuariosGuardados = JSON.parse(localStorage.getItem("usuarios") || "[]");
-            // EN EL localStorage ESTAN LOS USUARIOS ACTUALES,
-            // NOS LOS GUARDAMOS.
+        const usuariosGuardados = JSON.parse(localStorage.getItem("usuarios") || "[]") as Usuario[];
 
        if (id) {
-            // --- EDITAR ---
-            const userId= Number(id);
-            const edited = usuariosGuardados.findIndex(user => user.id === userId); 
-                    // COGE EL USUARIO DEL /id DE LA URL
+            // --- MODO EDITAR ---
+            const userId = Number(id);
+            const edited = usuariosGuardados.findIndex(user => user.id === userId);
             usuariosGuardados[edited] = {
                 id: userId,
                 imagen: formData.photo,
@@ -84,16 +81,16 @@ const Profile = () => {
             };
         } else {
             // --- MODO CREAR ---
-            const nuevoUsuario = {
-                id: Date.now(),         // Date DA UNA FECHA EN milisegundos. PARA UN id UNICO
+            const nuevoUsuario: Usuario = {
+                id: Date.now(),         // FECHA EN milisegundos PARA UN id UNICO
                 imagen: formData.photo,
                 nombre: formData.name,
                 correo: formData.email,
                 telefono: formData.number
             };
-            usuariosGuardados.push(nuevoUsuario);       // AÑADE UN NUEVO ELEMENTO A LA LISTA. 
+            usuariosGuardados.push(nuevoUsuario);       
         }
-    localStorage.setItem("usuarios", JSON.stringify(usuariosGuardados));  // Y ACTUALIZA LA LISTA.
+    localStorage.setItem("usuarios", JSON.stringify(usuariosGuardados));  
     window.dispatchEvent(new Event("usuariosActualizados"));
     navigate("/contact");
     };
@@ -102,22 +99,21 @@ const Profile = () => {
     return (
         <div>
             <div className="menuTop">
-                <Navbar 
-                    type="navbar botones"
+                <Navbar
                     text="Nuevo usuario"
                 />
                 <div className="profile-container">
                     <h4 className="profile-title">Rellena el siguiente formulario.</h4>
-                    <form 
+                    <form
                         className="profile-form"
                         onSubmit={handleForm}
                     >
                         <div>
                             <div className="profile-preview">
                                 {formData.photo ? (
-                                    <img src={formData.photo}/>  // CON LA IMAGEN CARGADA
+                                    <img src={formData.photo}/>  
                                 ) : (
-                                    <div>Foto</div>              // O SIN NADA
+                                    <div>Foto</div>            
                                 )}
                             </div>
                                 <label className="upload-button">
@@ -136,7 +132,7 @@ const Profile = () => {
                             value={formData.name}
                             name="name"
                             text="Nombre completo"
-                            action={handleChange} />   
+                            action={handleChange} />
                         <Input
                             type="profile-input"
                             value={formData.email}
@@ -150,20 +146,18 @@ const Profile = () => {
                             text="Teléfono"
                             action={handleChange} />
                         <Input
-                            type="profile-input" 
+                            type="profile-input"
                             value={formData.password}
                             name="password"
                             text="Contraseña"
-                            action={handleChange}
-                            inputType="password" />     {/* AL TENER inputType="password" --> ...*/}
+                            action={handleChange} />
                         <Input
                             type="profile-input"
                             value={formData.confirmPassword}
                             name="confirmPassword"
                             text="Confirmar Contraseña"
-                            action={handleChange}
-                            inputType="password" />     {/* AL TENER inputType="password" --> ...*/}
-                        
+                            action={handleChange} />
+
                         <BotonSubmenu type="submit btn-primary">
                             Subir Datos.
                         </BotonSubmenu>

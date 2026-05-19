@@ -1,18 +1,21 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState, useMemo } from "react";
-import { getAllPokemons } from '../../pokeApi/pokeAxios.js';
+import { getAllPokemons } from '../../pokeApi/pokeAxios';
 import Navbar from '../navbar/navbar'
 import Carta from '../card/card'
 import AllDropdowns from '../buttons/allFilters'
 import "../../styles/main.css"
 import '../../styles/filters.css'
 import axios from "axios";
+import type { Pokemon } from '../../types/pokemon';
+import type { Filters } from '../../types/app';
 
 const MainMenu = () => {
     const navigate = useNavigate();
-    const [allPokemons, setAllPokemons] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [filters, setFilters] = useState({
+
+    const [allPokemons, setAllPokemons] = useState<Pokemon[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [filters, setFilters] = useState<Filters>({
         generation: "all",
         type: "all",
         species: "all",
@@ -21,54 +24,50 @@ const MainMenu = () => {
     });
 
 
-    // --- CONSULTA A LA API EN pokeAxios.js ---
+    // --- CONSULTA A LA API EN pokeAxios.ts ---
     useEffect(() => {
         getAllPokemons()
           .then((response) => {
-              const promises = response.data.results.map(pokemon => axios.get(pokemon.url));
-                              // CON EL .map RECORRE TODOS LOS Pokemon, Y POR CADA UNO CREA UNA promesa.
-                              // promises = ARRAY
+              const promises = response.data.results.map(pokemon => axios.get<Pokemon>(pokemon.url));
               const details = Promise.all(promises)
-                              // Promise.all GESTIONA LAS PROMESAS, Y SOLO FUNCIONA SI TODAS LAS PROMESAS SE CUMPLEN
+                              // --> Promise.all  SOLO FUNCIONA SI TODAS LAS PROMESAS SE CUMPLEN.
 
               details.then((results) => {
                 setAllPokemons(results.map(poke => poke.data))
                 setLoading(false);
               })
           })
-          .catch ((err) => {          // SI Promise.all NO SE CUMPLE ENTRARIA AQUI.
+          .catch ((err) => {        
                 console.error("Error cargando Pokémon:", err);
                 setLoading(false);
           })
     }, []);
-    
+
 
     // --- ACTUALIZA LA data CON CADA FILTRO APLICADO ---
-    const handleFilterChange = (label, value) => {
+    const handleFilterChange = (label: keyof Filters, value: string): void => {
       setFilters(prevFilters => ({ ...prevFilters, [label]: value }));
     };
 
 
     // --- LOGICA DE CADA FILTRO ---
-    // useMemo() --> OPTIMIZA EL PROCESO SI TUVIESE QUE FILTRAR MILES DE DATOS.
-    //    MEJOR TENERLO
-    const filteredPokemons = useMemo(() => {
-      if (filters.search) {                   // SI HAY BÚSQUEDA POR NOMBRE → ignoramos TODOS los demás filtros
+    const filteredPokemons = useMemo<Pokemon[]>(() => {   // useMemo() --> OPTIMIZA EL PROCESO
+      if (filters.search) {                 
         return allPokemons.filter(pokemon =>
           pokemon.name === filters.search
         );
       }
 
-      return allPokemons.filter(pokemon => {  // SI NO HAY BUSQUEDA POR NOMBRE → aplicamos los filtros normales
+      return allPokemons.filter(pokemon => {  
         // --- POR GENERACION ---
         if (filters.generation !== "all") {
-          const genRanges = {
+          const genRanges: Record<string, [number, number]> = {
               "gen1": [1, 151],
               "gen2": [152, 251],
               "gen3": [252, 386],
-              "gen4": [387, 493], 
-              "gen5": [494, 649],   
-              "gen6": [650, 721],  
+              "gen4": [387, 493],
+              "gen5": [494, 649],
+              "gen6": [650, 721],
               "gen7": [722, 809]
           };
           const range = genRanges[filters.generation];
@@ -83,8 +82,8 @@ const MainMenu = () => {
         }
         // --- PESO ---
         if (filters.weight !== "all") {
-          const weightKg = pokemon.weight / 10; // PokeAPI DA PESO EN hectogramos, /10 LO PASAMOS A kilogramos
-          const weightRanges = {
+          const weightKg = pokemon.weight / 10;
+          const weightRanges: Record<string, [number, number]> = {
             "weight1": [0, 5],
             "weight2": [5, 20],
             "weight3": [20, 50],
@@ -99,8 +98,8 @@ const MainMenu = () => {
         }
         // --- ALTURA ---
         if (filters.height !== "all") {
-          const heightM = pokemon.height / 10; // PokeAPI DA LA ALTURA EN decimetros. /10 LO PASAMOS A metros.
-          const heightRanges = {
+          const heightM = pokemon.height / 10; 
+          const heightRanges: Record<string, [number, number]> = {
             "height1": [0, 0.5],
             "height2": [0.5, 1],
             "height3": [1, 2],
@@ -117,23 +116,21 @@ const MainMenu = () => {
     }, [allPokemons, filters]);
 
 
-  if (loading) return <div>Cargando la página...</div>;  // PARA HACER LA APP MAS VISUAL.
-                                                         // Y ASEGURA QUE TODO VA BIEN.
+  if (loading) return <div>Cargando la página...</div>;  // --> APP MAS VISUAL.
 
 
     return (
         <div>
           <div className="menuTop">
-            <Navbar 
-              type="navbar botones"
+            <Navbar
               text="Uso de API y Formulario."
             />
-            <AllDropdowns onFilterChange={handleFilterChange}/>   {/* VIENE DE allFilter.jsx, Y APLICA CADA FILTRO AL MOMENTO*/}
+            <AllDropdowns onFilterChange={handleFilterChange}/>   
 
             <div className="grid">
                 {filteredPokemons.map((pokemon) => (
                     <div className="cards" key={pokemon.id}>
-                        <Carta 
+                        <Carta
                             action={() => navigate(`/detail/${pokemon.id}`)}
                             text={`${pokemon.id}-${pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}`} // id + Nombre
                             img={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png`}

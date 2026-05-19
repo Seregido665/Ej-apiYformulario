@@ -1,4 +1,3 @@
-import BotonSubmenu from '../buttons/butsSubMenu'
 import Navbar from '../navbar/navbar'
 import '../../styles/aboutMe.css'
 
@@ -6,8 +5,7 @@ const About = () => {
     return (
         <div>
             <div className="">
-                <Navbar 
-                    type="navbar botones"
+                <Navbar
                     text="Sobre mi"
                 />
             </div>
@@ -41,23 +39,16 @@ const About = () => {
                 <div className="about-text2">
                     <h2>A hacer una web para aprender ajedrez por TFG:</h2>
                     <div>
-                    <a href="https://github.com/Seregido665/ChessTeacher-Proyect" target="_blank" className="link2">
-                        Repositorio GitHub
-                    </a>
-                </div>
-                    <h4>(En proceso...)</h4>
+                        <a href="https://chess-teacher-rust.vercel.app/" target="_blank" className="link2">
+                            Probar APP
+                        </a>
+                    </div>
                 </div>
 
-                {/* Nueva estructura de 3 divs principales */}
                 <div className="new-images-section">
                     <div className="new-block">
                         <div className="new-img-wrapper"><img src="/imgChess/web1.jpg" className="about-image" /></div>
                         <div className="new-img-wrapper"><img src="/imgChess/code1.jpg" className="about-image" /></div>
-                    </div>
-
-                    <div className="new-block">
-                        <div className="new-img-wrapper"><img src="/imgChess/web2.jpg" className="about-image" /></div>
-                        <div className="new-img-wrapper"><img src="/imgChess/code2.jpg" className="about-image" /></div>
                     </div>
 
                     <div className="new-block">

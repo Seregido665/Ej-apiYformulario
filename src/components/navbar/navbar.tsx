@@ -3,23 +3,28 @@ import { useNavigate } from "react-router-dom"
 import BotonSubmenu from '../buttons/butsSubMenu'
 import "./navbar.css"
 
-const Navbar = ({ text }) => {
+interface NavbarProps {
+  text: string;
+}
 
-    // --- PARA NAVEGAR POR LOS MENUS --> App.jsx
+const Navbar = ({ text }: NavbarProps) => {
     const navigate = useNavigate();
 
-    const [hayUsuarios, setHayUsuarios] = useState(() => {
-        const guardados = JSON.parse(localStorage.getItem("usuarios") || "[]");
+    const [hayUsuarios, setHayUsuarios] = useState<boolean>(() => {
+        // unknown[] porque solo necesitamos .length.
+        const guardados = JSON.parse(localStorage.getItem("usuarios") || "[]") as unknown[];
         return guardados.length > 0;
     });
 
     useEffect(() => {
-        const comprobar = () => {
-            const guardados = JSON.parse(localStorage.getItem("usuarios") || "[]");
+        const comprobar = (): void => {
+            const guardados = JSON.parse(localStorage.getItem("usuarios") || "[]") as unknown[];
             setHayUsuarios(guardados.length > 0);
         };
+
         window.addEventListener("storage", comprobar);
         window.addEventListener("usuariosActualizados", comprobar);
+
         return () => {
             window.removeEventListener("storage", comprobar);
             window.removeEventListener("usuariosActualizados", comprobar);

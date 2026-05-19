@@ -1,37 +1,40 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getPokemonById } from '../../pokeApi/pokeAxios.js';
+import { getPokemonById } from '../../pokeApi/pokeAxios';
 import Navbar from '../navbar/navbar'
 import "../../styles/detail.css"
+import type { Pokemon } from '../../types/pokemon';
 
 const Details = () => {
-    const { id } = useParams(); // COGE EL "parametro dinamico" :id DESDE --> App.jsx
     const navigate = useNavigate();
-    const currentId = Number(id);
-    const [pokemon, setPokemon] = useState(null);
 
-    // --- CONSULTA A LA API EN pokeAxios.js ---
+    const { id } = useParams<{ id: string }>(); // COGE EL :id DESDE --> App.jsx
+    const currentId = Number(id);
+
+    const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+
+    // --- CONSULTA A LA API EN pokeAxios.ts ---
      useEffect(() => {
-        getPokemonById(id)  
+        if (!id) return;
+        getPokemonById(id)
             .then(response => setPokemon(response.data))
             .catch(error => console.log(error));
     }, [id]);
 
-    if (!pokemon) return <p>Cargando...</p>;  
+    if (!pokemon) return <p>Cargando...</p>;
 
 
     return (
         <div className="details-container">
             <div className="menuTop">
-                <Navbar 
-                    type="navbar botones"
+                <Navbar
                     text="Detalles"
                 />
-                
+
                 <div className="mt-4">
                     <div>
                         <h3>#{pokemon.id.toString().padStart(3, '0')} - {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</h3>      {/*PARA QUE LOS NUMEROS SE VEAN 007 por ejemplo*/}
-            
+
                     </div>
                     <div className="pokemon-nav">
                         <button
@@ -44,7 +47,7 @@ const Details = () => {
                         <div className="pokemon-image-container">
                             <div className="pokemon-image-wrapper">
                                 <img
-                                    src={pokemon.sprites.front_default}
+                                    src={pokemon.sprites.front_default ?? undefined}
                                     className="pokemon-image"
                                 />
                             </div>
