@@ -1,83 +1,25 @@
 {
   "compilerOptions": {
-    // ── Compilación ──────────────────────────────────────────────────────────
-    // Versión de JavaScript a la que TypeScript compila el código.
-    // ES2020 cubre async/await, optional chaining (?.), nullish coalescing (??).
     "target": "ES2020",
-
-    // Bibliotecas de tipos disponibles en tiempo de compilación.
-    // DOM y DOM.Iterable son necesarias para trabajar con el navegador (window, document, etc.).
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
-
-    // Cuando se usan campos de clase (class fields), TS los define con Object.defineProperty
-    // en lugar de asignación directa. Necesario para que se comporte igual que los navegadores modernos.
     "useDefineForClassFields": true,
-
-    // ── Módulos ───────────────────────────────────────────────────────────────
-    // Sistema de módulos que genera el compilador. ESNext mantiene los imports/exports
-    // de ES Modules tal cual, dejando que Vite los gestione.
     "module": "ESNext",
-
-    // Cómo TypeScript resuelve los imports. "bundler" está optimizado para herramientas
-    // como Vite o webpack que hacen su propia resolución de módulos.
     "moduleResolution": "bundler",
-
-    // Permite importar archivos .ts/.tsx en imports sin extensión cuando moduleResolution
-    // es "bundler". Requerido junto con allowImportingTsExtensions.
     "allowImportingTsExtensions": true,
-
-    // Permite importar archivos JSON directamente con import data from './data.json'.
     "resolveJsonModule": true,
-
-    // ── JSX ───────────────────────────────────────────────────────────────────
-    // Cómo se transforma el JSX. "react-jsx" usa el nuevo JSX Transform de React 17+
-    // (no necesita importar React en cada archivo).
     "jsx": "react-jsx",
-
-    // ── Emisión ───────────────────────────────────────────────────────────────
-    // No genera archivos .js: Vite se encarga de transpilar, TypeScript solo verifica tipos.
     "noEmit": true,
-
-    // Cada archivo se analiza como módulo independiente (como hace esbuild/Vite internamente).
-    // Evita problemas con algunas características que requieren análisis multi-archivo.
     "isolatedModules": true,
-
-    // Fuerza a TypeScript a tratar cada archivo como módulo aunque no tenga imports/exports.
-    // Evita colisiones de variables globales entre archivos.
     "moduleDetection": "force",
-
-    // ── Migración gradual JS → TS ─────────────────────────────────────────────
-    // Permite que archivos .js y .jsx convivan con .ts y .tsx en el mismo proyecto.
-    // Esencial para la migración gradual: puedes ir convirtiendo archivo a archivo.
     "allowJs": true,
-
-    // No aplica comprobación de tipos a los archivos .js existentes.
-    // Los archivos .ts sí se comprueban. Así la migración no rompe nada al empezar.
     "checkJs": false,
-
-    // ── Comprobaciones de tipos ───────────────────────────────────────────────
-    // Desactivado durante la migración inicial para no bloquear el proyecto con
-    // errores en archivos que aún no se han migrado. Se irá activando progresivamente.
     "strict": false,
-
-    // Avisa si hay variables declaradas pero nunca usadas en archivos TypeScript.
     "noUnusedLocals": true,
-
-    // Avisa si hay parámetros de función declarados pero nunca usados en archivos TypeScript.
     "noUnusedParameters": true,
-
-    // Avisa si un switch/case puede "caer" al siguiente caso sin un break/return.
     "noFallthroughCasesInSwitch": true,
-
-    // ── Interoperabilidad ─────────────────────────────────────────────────────
-    // Omite la verificación de tipos en archivos .d.ts de node_modules.
-    // Acelera la compilación y evita errores en librerías de terceros.
     "skipLibCheck": true
   },
 
-  // Qué carpetas analiza TypeScript. Solo "src" por ahora.
   "include": ["src"],
-
-  // Carpetas que TypeScript ignora completamente.
   "exclude": ["node_modules", "dist"]
 }
